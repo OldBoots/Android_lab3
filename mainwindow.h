@@ -5,6 +5,8 @@
 #include <QScreen>
 #include <QTimer>
 #include "bug.h"
+#include <QRandomGenerator>
+#include <QLineEdit>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,13 +20,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    void slot_charge_timer();
+    void slot_each_sec();
     void slot_start_game();
-    void slot_spawn_bug();
     void slot_chec_stop();
 
-private:
-    void stop_game();
 private:
     QSize ss;
     int sh;
@@ -33,10 +32,13 @@ private:
     QTimer *timer_bug;
     QVector <Bug *> vec_bugs;
     QGraphicsRectItem *rect_end;
-    QGraphicsScene * scene;
-//    QGraphicsLineItem *border;
+    QGraphicsScene *scene;
     QGraphicsTextItem *game_over;
     int time;
+    int uan;
     Ui::MainWindow *ui;
 };
+
+int Rand(int min, int max);
+
 #endif // MAINWINDOW_H

@@ -20,9 +20,16 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
+         <widget class="QLabel" name="ico_u">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Фраги:</string>
+           <string>Юани:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -30,12 +37,19 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="lbl_count_bug">
+         <widget class="QLabel" name="lbl_count_u">
           <property name="text">
            <string>0</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ico_t">
+          <property name="text">
+           <string>TextLabel</string>
           </property>
          </widget>
         </item>
@@ -50,7 +64,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="lbl_count_time">
+         <widget class="QLabel" name="lbl_count_t">
           <property name="text">
            <string>0</string>
           </property>

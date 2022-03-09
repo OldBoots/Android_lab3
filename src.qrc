@@ -3,5 +3,10 @@
         <file>BackGround.png</file>
         <file>WarriorBug.png</file>
         <file>WorkBug.png</file>
+        <file>uan.png</file>
+        <file>clocks.png</file>
+        <file>RB1.mp3</file>
+        <file>RB2.mp3</file>
+        <file>Shot.mp3</file>
     </qresource>
 </RCC>
