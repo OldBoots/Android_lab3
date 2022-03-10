@@ -7,6 +7,9 @@
 #include "bug.h"
 #include <QRandomGenerator>
 #include <QLineEdit>
+#include <QThread>
+#include "mygraphscene.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,7 +35,7 @@ private:
     QTimer *timer_bug;
     QVector <Bug *> vec_bugs;
     QGraphicsRectItem *rect_end;
-    QGraphicsScene *scene;
+    MyGraphScene *scene;
     QGraphicsTextItem *game_over;
     int time;
     int uan;

@@ -11,11 +11,13 @@ CONFIG += c++11
 SOURCES += \
     bug.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    mygraphscene.cpp
 
 HEADERS += \
     bug.h \
-    mainwindow.h
+    mainwindow.h \
+    mygraphscene.h
 
 FORMS += \
     mainwindow.ui

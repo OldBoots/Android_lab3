@@ -1,5 +1,9 @@
 #include "bug.h"
 //PUBLIC
+
+Worker::Worker(QObject *prnt) : QObject (prnt){
+}
+
 Bug::Bug(bool type, QObject *prnt) : QObject (prnt), QGraphicsRectItem()
 {
     current_frame = 0;
@@ -8,7 +12,6 @@ Bug::Bug(bool type, QObject *prnt) : QObject (prnt), QGraphicsRectItem()
     se = new QMediaPlayer(this);
     ao = new QAudioOutput(this);
     se->setAudioOutput(ao);
-    connect(se, SIGNAL(errorOccurred(QMediaPlayer::Error error, const QString &errorString)), this, SLOT());
     if(type){
         skin = new QPixmap(":/WarriorBug.png");
         speed = 2;
@@ -22,7 +25,22 @@ Bug::Bug(bool type, QObject *prnt) : QObject (prnt), QGraphicsRectItem()
         se->setSource(QUrl("qrc:/RB1.mp3"));
         ao->setVolume(25);
     }
-    connect(this, SIGNAL(sig_timer()), this, SLOT(slot_next_frame()));
+    th = new QThread(this);
+    wr = new Worker();
+wr->moveToThread(th);
+        connect(this, SIGNAL(sig_timer_ev(bool,int,int,int)), wr, SLOT(slot_timer_ev(bool,int,int,int)));
+        connect(wr, SIGNAL(gopa(int,int)), this, SLOT(slot_gopa(int,int)));
+        qDebug("");
+        th->start();
+        slot_gopa(this->y(), current_frame);
+
+}
+
+void Bug::slot_gopa(int y, int cur_f){
+    setY(y);
+    current_frame = cur_f;
+    update(0, 0, 64, 64);
+    emit sig_timer_ev(current_state, current_frame, this->y(), speed);
 }
 
 bool Bug::get_cur_state(){
@@ -76,22 +94,18 @@ QPainterPath Bug::shape() const{
 }
 
 //PRIVATE SLOTS
-void Bug::slot_next_frame(){
-    if(current_state){
-        current_frame += 64;
-        if (current_frame > 64){
-            current_frame = 0;
+void Worker::slot_timer_ev(bool cur_s, int cur_f, int y, int speed){
+    int hh = y, gg = cur_f;
+        QThread::currentThread()->msleep(250);
+        if(cur_s){
+            hh += 5 * speed;
+            gg += 64;
+            if (gg > 64){
+                gg = 0;
+            }
+        } else {
+            gg = 128;
         }
-    } else {
-        current_frame = 128;
-    }
-    this->update(0, 0, 64, 64);
-}
-
-void Bug::slot_timer_ev(){
-    if(current_state){
-        this->setY(this->y() + 5 * speed);
-    }
-    emit sig_timer();
+        emit gopa(hh, gg);
 }
 

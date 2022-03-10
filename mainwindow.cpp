@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ico_u->setPixmap(QPixmap(":/uan.png").scaled(16, 16, Qt::KeepAspectRatio));
     ui->ico_t->setPixmap(QPixmap(":/clocks.png").scaled(16, 16, Qt::KeepAspectRatio));
 
-    scene = new QGraphicsScene(ui->graphicsView);
+    scene = new MyGraphScene(ui->graphicsView);
     scene->setSceneRect(0, 0, sw, sh);
     game_over = new QGraphicsTextItem;
 
@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     timer_game = new QTimer;
     timer_bug = new QTimer;
+
     connect(timer_game, SIGNAL(timeout()), this, SLOT(slot_each_sec()));
     connect(timer_bug, SIGNAL(timeout()), this, SLOT(slot_chec_stop()));
     connect(ui->butt_start, SIGNAL(clicked()), this, SLOT(slot_start_game()));
@@ -63,7 +64,6 @@ void MainWindow::slot_each_sec(){
         vec_bugs << new Bug(Rand(0, 1));
         scene->addItem(vec_bugs[vec_bugs.size() - 1]);
         vec_bugs[vec_bugs.size() - 1]->setPos(x, 0);
-        connect(timer_bug, SIGNAL(timeout()), vec_bugs[vec_bugs.size() - 1], SLOT(slot_timer_ev()));
     }
 }
 
@@ -81,6 +81,7 @@ void MainWindow::slot_start_game(){
     timer_bug->start(250);
     timer_game->stop();
     timer_game->start(1000);
+    slot_each_sec();
 }
 
 void MainWindow::slot_chec_stop(){
