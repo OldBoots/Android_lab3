@@ -16,24 +16,33 @@ Bug::Bug(bool type, QObject *prnt) : QObject (prnt), QGraphicsRectItem()
         skin = new QPixmap(":/WarriorBug.png");
         speed = 2;
         hp = 100;
-        se->setSource(QUrl("qrc:/RB2.mp3"));
-        ao->setVolume(50);
+        path_track = "qrc:/RB2.mp3";
+        se->setSource(QUrl(path_track));
+        ao->setVolume(70);
     } else {
         skin = new QPixmap(":/WorkBug.png");
         speed = 1;
         hp = 50;
+        path_track = "qrc:/RB1.mp3";
         se->setSource(QUrl("qrc:/RB1.mp3"));
-        ao->setVolume(25);
+        ao->setVolume(5);
     }
     th = new QThread(this);
     wr = new Worker();
-wr->moveToThread(th);
-        connect(this, SIGNAL(sig_timer_ev(bool,int,int,int)), wr, SLOT(slot_timer_ev(bool,int,int,int)));
-        connect(wr, SIGNAL(gopa(int,int)), this, SLOT(slot_gopa(int,int)));
-        qDebug("");
-        th->start();
-        slot_gopa(this->y(), current_frame);
+    wr->moveToThread(th);
+    connect(this, SIGNAL(sig_timer_ev(bool,int,int,int)), wr, SLOT(slot_timer_ev(bool,int,int,int)));
+    connect(wr, SIGNAL(gopa(int,int)), this, SLOT(slot_gopa(int,int)));
+    qDebug("");
+    th->start();
+    slot_gopa(this->y(), current_frame);
+    connect(se, SIGNAL(errorChanged()), this, SLOT(reset_player()));
+}
 
+void Bug::reset_player(){
+    delete se;
+    se = new QMediaPlayer(this);
+    se->setSource(path_track);
+    se->setAudioOutput(ao);
 }
 
 void Bug::slot_gopa(int y, int cur_f){
@@ -59,12 +68,11 @@ int Bug::get_reward(){
 void Bug::mousePressEvent (QGraphicsSceneMouseEvent *event){
     if (event->buttons() & Qt::LeftButton)
     {
-        if(!current_state){
-            se->setSource(QUrl("qrc:/Shot.mp3"));
+        if(current_state){
+            se->stop();
+            se->play();
+            set_damage(25);
         }
-        se->stop();
-        se->play();
-        set_damage(25);
     }
 }
 
@@ -96,16 +104,16 @@ QPainterPath Bug::shape() const{
 //PRIVATE SLOTS
 void Worker::slot_timer_ev(bool cur_s, int cur_f, int y, int speed){
     int hh = y, gg = cur_f;
-        QThread::currentThread()->msleep(250);
-        if(cur_s){
-            hh += 5 * speed;
-            gg += 64;
-            if (gg > 64){
-                gg = 0;
-            }
-        } else {
-            gg = 128;
+    QThread::currentThread()->msleep(250);
+    if(cur_s){
+        hh += 5 * speed;
+        gg += 64;
+        if (gg > 64){
+            gg = 0;
         }
-        emit gopa(hh, gg);
+    } else {
+        gg = 128;
+    }
+    emit gopa(hh, gg);
 }
 

@@ -16,9 +16,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ico_u->setPixmap(QPixmap(":/uan.png").scaled(16, 16, Qt::KeepAspectRatio));
     ui->ico_t->setPixmap(QPixmap(":/clocks.png").scaled(16, 16, Qt::KeepAspectRatio));
 
-    scene = new MyGraphScene(ui->graphicsView);
+    scene = new QGraphicsScene(ui->graphicsView);
     scene->setSceneRect(0, 0, sw, sh);
     game_over = new QGraphicsTextItem;
+
+    b_rect = new BackRect;
+    b_rect->setRect(0, 0, sw, sh - 17);
+    scene->addItem(b_rect);
 
     rect_end = new QGraphicsRectItem;
     rect_end->setRect(0, sh - 16, sw, 16);
@@ -98,7 +102,6 @@ void MainWindow::slot_chec_stop(){
         game_over->setPos(sw / 2 - 115, sh / 2 - 64);
         game_over->setDefaultTextColor(Qt::red);
     }
-
 }
 
 //OTHER
@@ -109,6 +112,3 @@ int Rand(int min, int max){
     std::uniform_int_distribution dist(min, max);
     return dist(*QRandomGenerator::global());
 }
-
-
-

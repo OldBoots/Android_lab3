@@ -4,7 +4,7 @@
 #include <QGraphicsRectItem>
 #include <QObject>
 #include <QPainter>
-#include <QTouchEvent>
+//#include <QTouchEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QMediaPlayer>
 #include <QAudioOutput>
@@ -39,7 +39,7 @@ private:
 
 private slots:
     void slot_gopa(int y, int cur_f);
-
+    void reset_player();
 private:
     QPixmap *skin;
     int hp;
@@ -51,6 +51,7 @@ private:
     QAudioOutput *ao;
     QThread *th;
     Worker *wr;
+    QString path_track;
 signals:
     void sig_timer_ev(bool cur_s, int cur_f, int y, int speed);
 };

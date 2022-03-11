@@ -8,7 +8,8 @@
 #include <QRandomGenerator>
 #include <QLineEdit>
 #include <QThread>
-#include "mygraphscene.h"
+#include <QGraphicsItem>
+#include "backrect.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -35,8 +36,9 @@ private:
     QTimer *timer_bug;
     QVector <Bug *> vec_bugs;
     QGraphicsRectItem *rect_end;
-    MyGraphScene *scene;
+    QGraphicsScene *scene;
     QGraphicsTextItem *game_over;
+    BackRect *b_rect;
     int time;
     int uan;
     Ui::MainWindow *ui;
